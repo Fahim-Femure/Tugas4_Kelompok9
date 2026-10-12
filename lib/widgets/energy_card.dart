@@ -58,25 +58,28 @@ class EnergyCard extends StatelessWidget {
                     Positioned(
                       top: 0,
                       right: 0,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: item.aktif
-                              ? const Color(0xFF2E7D32)
-                              : const Color(0xFFEEF2F6),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          item.aktif ? 'Dipilih' : 'Standar',
-                          style: GoogleFonts.poppins(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
+                      child: GestureDetector(
+                        onTap: onDoubleTap,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
                             color: item.aktif
-                                ? Colors.white
-                                : const Color(0xFF64748B),
+                                ? const Color(0xFF2E7D32)
+                                : const Color(0xFFEEF2F6),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            item.aktif ? 'Dipilih' : 'Pilih',
+                            style: GoogleFonts.poppins(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                              color: item.aktif
+                                  ? Colors.white
+                                  : const Color(0xFF64748B),
+                            ),
                           ),
                         ),
                       ),
@@ -159,11 +162,13 @@ class EnergyCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'Aktif',
+                          item.aktif ? 'Dipilih' : 'Standar',
                           style: GoogleFonts.poppins(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: const Color(0xFF1E293B),
+                            color: item.aktif
+                                ? const Color(0xFF2E7D32)
+                                : const Color(0xFF64748B),
                           ),
                         ),
                       ],

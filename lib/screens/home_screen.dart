@@ -22,6 +22,36 @@ class _HomeScreenState extends State<HomeScreen> {
   double _skala = 1.0;
   double _skalaAwal = 1.0;
 
+  int get _totalKapasitas {
+    return _daftarEnergi
+        .where((item) => item.aktif)
+        .fold<int>(0, (sum, item) => sum + item.kapasitasMw.toInt());
+  }
+
+  double get _rataRataEfisiensi {
+    final terpilih = _daftarEnergi.where((item) => item.aktif).toList();
+    if (terpilih.isEmpty) return 0.0;
+    final total = terpilih.fold<double>(0.0, (sum, item) => sum + item.efisiensiPersen);
+    return total / terpilih.length;
+  }
+
+  String _formatKapasitas(int total) {
+    if (total == 0) return '0 MW';
+    if (total >= 1000) {
+      final s = total.toString();
+      return '${s.substring(0, s.length - 3)}.${s.substring(s.length - 3)} MW';
+    }
+    return '$total MW';
+  }
+
+  String _formatEfisiensi(double efisiensi) {
+    if (efisiensi == 0.0) return '0%';
+    if (efisiensi % 1 == 0) {
+      return '${efisiensi.toInt()}%';
+    }
+    return '${efisiensi.toStringAsFixed(1)}%';
+  }
+
   @override
   void dispose() {
     _pageController.dispose();
@@ -41,9 +71,9 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 const HeaderSection(),
                 const SizedBox(height: 20),
-                const SummaryCard(
-                  totalKapasitas: '2.200 MW',
-                  rataRataEfisiensi: '89.8%',
+                SummaryCard(
+                  totalKapasitas: _formatKapasitas(_totalKapasitas),
+                  rataRataEfisiensi: _formatEfisiensi(_rataRataEfisiensi),
                 ),
                 const SizedBox(height: 24),
                 Padding(
